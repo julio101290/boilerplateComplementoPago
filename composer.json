@@ -1,5 +1,5 @@
 {
-    "name": "julio101290/boilerplatesells",
+    "name": "julio101290/boilerplatecomplementopago",
     "description": "library to generate quotes with PDF print format to send to clients",
     "keywords": [
         "codeigniter4",
@@ -10,6 +10,7 @@
         "CRUD",
         "invoice",
         "authorization",
+        "payments",
         "boilerplate"
     ],
     "type": "library",
@@ -42,7 +43,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "julio101290\\boilerplatesells\\": "src"
+            "julio101290\\boilerplatecomplementopago\\": "src"
         }
     },
     "autoload-dev": {

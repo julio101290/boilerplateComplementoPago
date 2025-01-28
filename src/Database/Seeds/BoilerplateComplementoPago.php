@@ -1,6 +1,6 @@
 <?php
 
-namespace julio101290\boilerplatesells\Database\Seeds;
+namespace julio101290\boilerplatecomplementopago\Database\Seeds;
 
 use CodeIgniter\Config\Services;
 use CodeIgniter\Database\Seeder;
@@ -10,7 +10,7 @@ use Myth\Auth\Models\UserModel;
 /**
  * Class BoilerplateSeeder.
  */
-class BoilerplateSells extends Seeder {
+class BoilerplateComplementoPago extends Seeder {
 
     /**
      * @var Authorize
@@ -37,10 +37,10 @@ class BoilerplateSells extends Seeder {
 
 
         // Permission
-        $this->authorize->createPermission('sells-permission', 'Permission to view sells list');
+        $this->authorize->createPermission('listapagos-permission', 'Permission to payment complement CFDI4.0');
 
         // Assign Permission to user
-        $this->authorize->addPermissionToUser('sells-permission', 1);
+        $this->authorize->addPermissionToUser('listapagos-permission', 1);
 
     }
 
