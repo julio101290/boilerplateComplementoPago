@@ -20,7 +20,7 @@ $routes->group('admin', function ($routes) {
                 , ['namespace' => 'julio101290\boilerplatecomplementopago\Controllers']
                 );
     $routes->get('editPago/(:any)'
-                , 'PagosController::editPago/$1',
+                , 'PagosController::editPago/$1'
                 , ['namespace' => 'julio101290\boilerplatecomplementopago\Controllers']
                 );
     
