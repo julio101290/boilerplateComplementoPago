@@ -1,6 +1,6 @@
 <?php
 
-namespace julio101290\boilerplatesells\Models;
+namespace julio101290\boilerplatecomplementopago\Models;
 
 use CodeIgniter\Model;
 

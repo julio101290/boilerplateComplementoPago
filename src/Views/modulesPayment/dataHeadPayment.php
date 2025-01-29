@@ -40,13 +40,13 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="generales" role="tabpanel" aria-labelledby="generales">
 
-                        <?= $this->include('modulesPayment/generalPayment') ?>
+                        <?= $this->include('julio101290\boilerplatecomplementopago\Views\modulesPayment/generalPayment') ?>
 
                     </div>
 
                     <div class="tab-pane fade" id="otrosDatos" role="tabpanel" aria-labelledby="otrosDatos">
 
-                        <?= $this->include('modulesPayment/otrosDatos') ?>
+                        <?= $this->include('julio101290\boilerplatecomplementopago\Views\modulesPayment/otrosDatos') ?>
 
                     </div>
 
@@ -54,7 +54,7 @@
 
                     <div class="tab-pane fade" id="facturacionMX" role="tabpanel" aria-labelledby="otrosDatos">
 
-                        <?= $this->include('modulesPayment/facturacionMX') ?>
+                        <?= $this->include('julio101290\boilerplatecomplementopago\Views\modulesPayment/facturacionMX') ?>
 
                     </div>
 

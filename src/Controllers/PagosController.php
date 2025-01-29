@@ -21,6 +21,7 @@ use julio101290\boilerplatebranchoffice\Models\BranchofficesModel;
 use julio101290\boilerplatecashtonnage\Models\ArqueoCajaModel;
 use julio101290\boilerplateinventory\Models\SaldosModel;
 use julio101290\boilerplatecomplementopago\Models\PagosModel;
+use julio101290\boilerplatesells\Models\EnlacexmlModel;
 
 class PagosController extends BaseController {
 
@@ -44,6 +45,7 @@ class PagosController extends BaseController {
     protected $arqueoCaja;
     protected $saldos;
     protected $pagos;
+    protected $enlaceXML;
 
     public function __construct() {
         $this->log = new LogModel();
@@ -64,6 +66,7 @@ class PagosController extends BaseController {
         $this->arqueoCaja = new ArqueoCajaModel();
         $this->saldos = new SaldosModel();
         $this->pagos = new PagosModel();
+        $this->enlaceXML = new EnlacexmlModel();
 
         helper('menu');
         helper('utilerias');
@@ -143,6 +146,36 @@ class PagosController extends BaseController {
             return \Hermawan\DataTables\DataTable::of($datos)->toJson(true);
         }
     }
+    
+    
+    
+        /*
+     * ZML ENLAZADOS POR DOCUMENTO
+     */
+
+    public function getXMLEnlazadosPagos($uuid) {
+
+        try {
+
+            $datosPagos = $this->pagos->select("*")->where("UUID", $uuid)->first();
+
+            if (isset($datosPagos)) {
+
+                $datosXMLEnlazados = $this->enlaceXML->select("id,idDocumento,uuidXML,tipo,importe")
+                        ->where("idDocumento", $datosPagos["id"])
+                        ->where("tipo", "pag");
+                return \Hermawan\DataTables\DataTable::of($datosXMLEnlazados)->toJson(true);
+            } else {
+
+                $datosXMLEnlazados = $this->enlaceXML->select("id,idDocumento,uuidXML,tipo,importe")->where("idDocumento", 0);
+                return \Hermawan\DataTables\DataTable::of($datosXMLEnlazados)->toJson(true);
+            }
+        } catch (Exception $ex) {
+
+            return $ex->getMessage();
+        }
+    }
+    
 
     /**
      * 

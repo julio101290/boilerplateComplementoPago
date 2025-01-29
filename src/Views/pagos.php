@@ -1,5 +1,5 @@
-<?= $this->include('load/daterangapicker') ?>
-<?= $this->include('load/toggle') ?>
+<?= $this->include('julio101290\boilerplate\Views\load/daterangapicker') ?>
+<?= $this->include('julio101290\boilerplate\Views\load/toggle') ?>
 <?= $this->include('julio101290\boilerplate\Views\load\datatables') ?>
 <?= $this->include('julio101290\boilerplate\Views\load\select2') ?>
 
@@ -11,11 +11,11 @@
 <!-- Section content -->
 <?= $this->section('content') ?>
 
-<?= $this->include('modulesNotasCredito/modaSendMail') ?>
+<?= $this->include('julio101290\boilerplatecomplementopago\Views\modulesPayment/modaSendMail') ?>
 
 
-<?= $this->include('modulesNotasCredito/listaFacturas') ?>
-<?= $this->include('modulesNotasCredito/xmlList') ?>
+<?= $this->include('julio101290\boilerplatecomplementopago\Views\modulesPayment/listaFacturas') ?>
+<?= $this->include('julio101290\boilerplatecomplementopago\Views\modulesPayment/xmlList') ?>
 
 
 <!-- SELECT2 EXAMPLE -->
@@ -117,9 +117,9 @@
         <div class="float-right">
             <div class="btn-group">
 
-                <a href="<?= base_url("admin/newSells") ?>" class="btn btn-primary btnAddCustumers" data-target="#modalAddCustumers"><i class="fa fa-plus"></i>
+                <a href="<?= base_url("admin/newPago") ?>" class="btn btn-primary btnAddCustumers" data-target="#modalAddCustumers"><i class="fa fa-plus"></i>
 
-                    Nueva Venta
+                    Generar Complemento de Pago
 
                 </a>
 
