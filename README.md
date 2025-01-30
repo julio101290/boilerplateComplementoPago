@@ -20,7 +20,7 @@ CodeIgniter4 Boilerplatesells library to generate sells with PDF print format to
 
    	composer require hermawan/codeigniter4-datatables
 
-    composer require julio101290/boilerplatelog
+    	composer require julio101290/boilerplatelog
 
 	composer require julio101290/boilerplatecompanies
 
@@ -33,6 +33,8 @@ CodeIgniter4 Boilerplatesells library to generate sells with PDF print format to
  	composer require julio101290/boilerplatecomprobanterd
 
  	composer require julio101290/boilerplatesells
+
+  	composer require julio101290/boilerplatecomplementopago
 
 
 ### Run command for migration and seeder
@@ -50,27 +52,20 @@ CodeIgniter4 Boilerplatesells library to generate sells with PDF print format to
  	php spark boilerplatecomprobanterd:installcomprobanterd
 
 	php spark boilerplatequotes:installsells
+
+ 	php spark boilerplatecomplementopago:installcomplementopago
 	
 
 # Make the Menu, Example
-![image](https://github.com/user-attachments/assets/f949cad0-1797-488b-a80f-4181e099aed5)
+![image](https://github.com/user-attachments/assets/e8922b6f-6afe-49b4-ad37-5eb82665c179)
+
 
 
 # Ready
 
-![image](https://github.com/user-attachments/assets/61194714-d424-4822-9aea-1202cca20bf0)
+![image](https://github.com/user-attachments/assets/f059a131-b411-4855-971a-86098ac5af5f)
 
-![image](https://github.com/user-attachments/assets/2f17f8ac-737f-42d6-8b4f-88219227586e)
-
-![image](https://github.com/user-attachments/assets/470bd5a4-47ea-4d35-954c-9e420de2f798)
-
-![image](https://github.com/user-attachments/assets/3947c14b-0f50-4477-9233-06b03f841904)
-
-![image](https://github.com/user-attachments/assets/7c268468-1766-40b8-acaf-eea5900b8769)
-
-![image](https://github.com/user-attachments/assets/acf52c06-bffd-42ef-b032-ca060085d884)
-
-![image](https://github.com/user-attachments/assets/f2d47409-8c84-42bc-b9f2-4f89c269bd45)
+![image](https://github.com/user-attachments/assets/1497254f-16ad-4c42-b118-ee1f27df5bad)
 
 
 
