@@ -38,7 +38,7 @@
 
 
                 <div class="form-group">
-                    <label for="idEmpresa">Empresa </label>
+                    <label for="idEmpresa"><?= lang('payments.companie') ?></label>
                     <select id='idEmpresa' name='idEmpresa' class="idEmpresa" style='width: 80%;'>
 
                         <?php
@@ -47,7 +47,7 @@
                             echo "   <option value='$idEmpresa'>$idEmpresa - $nombreEmpresa</option>";
                         } else {
 
-                            echo "  <option value='0'>Todas las empresas</option>";
+                            echo "  <option value='0'>" . lang('payments.allCompanies') . "</option>";
 
                             foreach ($empresas as $key => $value) {
 
@@ -67,11 +67,11 @@
 
 
                 <div class="form-group">
-                    <label for="idSucursal">Sucursal </label>
+                    <label for="idSucursal"><?= lang("payments.branchoffice") ?> </label>
                     <select id='idSucursal' name='idSucursal' class="idSucursal" style='width: 100%;'>
 
                         <?php
-                        echo "  <option value='0'>Todas las Sucursales</option>";
+                        echo "  <option value='0'>" . lang('payments.AllBranchoffice') . "</option>";
                         if (isset($idSucursal)) {
 
                             echo "   <option value='$idSucursal'>$idSucursal - $nombreSucursal</option>";
@@ -91,11 +91,11 @@
 
 
                 <div class="form-group">
-                    <label for="productos">Cliente </label>
+                    <label for="productos"><?= lang("payments.custumers") ?></label>
                     <select id='clientes' name='clientes' class="clientes" style='width: 100%;'>
 
                         <?php
-                        echo "  <option value='0'>Todas los clientes</option>";
+                        echo "  <option value='0'>" . lang("payments.allCustumers") . "</option>";
                         ?>
 
                     </select>
@@ -103,7 +103,7 @@
 
             </div>
 
-            <div class="btn-group">
+            <div class="btn-group" hidden>
 
 
 
@@ -119,7 +119,7 @@
 
                 <a href="<?= base_url("admin/newPago") ?>" class="btn btn-primary btnAddCustumers" data-target="#modalAddCustumers"><i class="fa fa-plus"></i>
 
-                    Generar Complemento de Pago
+                    <?= lang("payments.newPayment") ?>
 
                 </a>
 
@@ -141,28 +141,28 @@
 
                                 <th>#</th>
                                 <th>
-                                    Folio
+                                    <?= lang("payments.fields.folio") ?>
                                 </th>
                                 <th>
-                                    Cliente
+                                    <?= lang("payments.fields.custumer") ?>
                                 </th>
                                 <th>
-                                    Fecha
-                                </th>
-
-                                <th>
-                                    Total
-                                </th>
-                              
-                                <th>
-                                    Creado
-                                </th>
-                                <th>
-                                    Modificado
+                                    <?= lang("payments.fields.date") ?>
                                 </th>
 
                                 <th>
-                                    Acciones
+                                    <?= lang("payments.fields.total") ?>
+                                </th>
+
+                                <th>
+                                    <?= lang("payments.fields.created_at") ?>
+                                </th>
+                                <th>
+                                    <?= lang("payments.fields.updated_at") ?>
+                                </th>
+
+                                <th>
+                                    <?= lang("payments.fields.actions") ?>
                                 </th>
 
                             </tr>
@@ -222,11 +222,9 @@
                 'data': 'date'
             },
 
-
             {
                 'data': 'total'
             },
-
 
             {
                 'data': 'created_at'
@@ -234,14 +232,13 @@
 
             {
                 'data': 'updated_at'
-               
+
             },
 
- 
             {
                 "data": function (data) {
 
-         
+
 
                     return `<td class="text-right py-0 align-middle">
                          <div class="btn-group btn-group-sm">
@@ -402,9 +399,9 @@
 
 
         var uuid = $(this).attr("uuid");
-        
+
         $("#idVentaSinAsignar").val(uuid);
-        
+
         tableListXML.ajax.url(`<?= base_url('admin/xml/xmlSinAsignar/p') ?>`).load();
 
     });

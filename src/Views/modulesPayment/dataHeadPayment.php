@@ -4,7 +4,7 @@
 
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Encabezado</h3>
+                <h3 class="card-title"><?= lang("newPayment.header") ?></h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -21,17 +21,19 @@
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="generales-tab" data-toggle="tab" data-target="#generales" type="button" role="tab" aria-controls="generales" aria-selected="true">Generales</button>
+                        <button class="nav-link active" id="generales-tab" data-toggle="tab" data-target="#generales" type="button" role="tab" aria-controls="generales" aria-selected="true"><?= lang("newPayment.generals") ?></button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#otrosDatos" type="button" role="tab" aria-controls="otrosDatos" aria-selected="false">Otros
-                            Datos</button>
+                        <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#otrosDatos" type="button" role="tab" aria-controls="otrosDatos" aria-selected="false">
+                            
+                        <?= lang("newPayment.others") ?>
+                        </button>
                     </li>
 
 
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#facturacionMX" type="button" role="tab" aria-controls="facturacionMX" aria-selected="false">
-                            Facturación MX
+                           <?= lang("newPayment.invoiceMX") ?>
                         </button>
                     </li>
 
@@ -74,7 +76,7 @@
         <div class="col-12">
             <div class="card card-default">
                 <div class="card-header">
-                    <h3 class="card-title">Detalle de la venta</h3>
+                    <h3 class="card-title"><?=  lang("newPayment.paymentDetail")?></h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -101,14 +103,14 @@
                                         <!--=====================================
                                     ENCABEZADO
                                     ======================================-->
-                                        <div class="col-1">#</div>
-                                        <div class="col-1">Serie </div>
-                                        <div class="col-5">Folio </div>
-                                        <div class="col-1">Fecha </div>
-                                        <div class="col-1">Vencimiento </div>
-                                        <div class="col-1">Total </div>
-                                        <div class="col-1">Saldo </div>
-                                        <div class="col-1">Importe a Pagar </div>
+                                        <div class="col-1"><?= lang("newPayment.fields.row") ?></div>
+                                        <div class="col-1"><?= lang("newPayment.fields.serie") ?> </div>
+                                        <div class="col-5"><?= lang("newPayment.fields.folio") ?></div>
+                                        <div class="col-1"><?= lang("newPayment.fields.date") ?> </div>
+                                        <div class="col-1"><?= lang("newPayment.fields.dateExpiration") ?> </div>
+                                        <div class="col-1"><?= lang("newPayment.fields.total") ?> </div>
+                                        <div class="col-1"><?= lang("newPayment.fields.balance") ?> </div>
+                                        <div class="col-1"><?= lang("newPayment.fields.importToPay") ?> </div>
 
 
                                     </div>
@@ -173,7 +175,7 @@
                                     <div class="col-3" style="
                                          vertical-align: middle;
                                          ">
-                                        <label style="vertical-align: sub;margin-bottom: 0px;">Sub Total:</label>
+                                        <label style="vertical-align: sub;margin-bottom: 0px;"><?= lang("newPayment.subTotal") ?>:</label>
                                     </div>
 
                                     <div class="col-2">
@@ -196,7 +198,7 @@
                                          ">
                                         <label style="
                                                vertical-align: sub;
-                                               ">Impuesto:</label>
+                                               "><?= lang("newPayment.tax") ?>:</label>
                                     </div>
 
                                     <div class="col-2">
@@ -219,7 +221,7 @@
                                          ">
                                         <label style="
                                                vertical-align: sub;
-                                               ">Retencion IVA:</label>
+                                               "><?= lang("newPayment.VATwithholding") ?>:</label>
                                     </div>
 
                                     <div class="col-2">
@@ -242,7 +244,7 @@
                                          ">
                                         <label style="
                                                vertical-align: sub;
-                                               ">Retencion ISR:</label>
+                                               "><?= lang("newPayment.ISRwithholding") ?>:</label>
                                     </div>
 
                                     <div class="col-2">
@@ -264,7 +266,7 @@
                                          ">
                                         <label style="
                                                vertical-align: sub;
-                                               ">Total:</label>
+                                               "><?= lang("newPayment.total") ?>:</label>
                                     </div>
 
                                     <div class="col-2">
@@ -278,14 +280,14 @@
 
 
                                 <button type="button" class="btn btn-primary pull-right btnSavePayment" data-toggle="modal">
-                                    <i class="fa far fa-save"> </i>Guardar</button>
+                                    <i class="fa far fa-save"> </i><?= lang("newPayment.save") ?></button>
 
                                 <button type="button" class="btn bg-maroon btnPrint" data-toggle="modal" required="" data-placement="top" title="Imprimir">
-                                    <i class="fa fa-print"> </i> Guardar, Imprimir y cerrar
+                                    <i class="fa fa-print"> </i><?= lang("newPayment.savePrintClose") ?>
                                 </button>
 
                                 <button type="button" class="btn bg-maroon btnTimbrar" data-toggle="modal" required="" data-placement="top" title="Timbrar">
-                                    <i class="fas fa-qrcode"> </i> Timbrar
+                                    <i class="fas fa-qrcode"> </i> <?= lang("newPayment.stamp") ?>
                                 </button>
 
                             </div>

@@ -1,6 +1,6 @@
 <p>
 <h3>Otros Datos</h3>
-<div class="row">
+<div class="row" hidden>
 
 
     <div class="col-6">
@@ -28,8 +28,8 @@
 <div class="row">
     <div class="col-6">
         <div class="form-group">
-            <label>Observaciones</label>
-            <textarea class="form-control" rows="3" placeholder="Observaciones" id="obsevations" name="obsevations" value="<?= $observations ?>"></textarea>
+            <label><?= lang("newPayment.paymentObservations")  ?></label>
+            <textarea class="form-control" rows="3" placeholder="<?= lang("newPayment.paymentObservations")  ?>" id="obsevations" name="obsevations" value="<?= $observations ?>"></textarea>
         </div>
     </div>
 </div>
