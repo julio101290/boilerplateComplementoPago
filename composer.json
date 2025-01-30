@@ -1,6 +1,6 @@
 {
     "name": "julio101290/boilerplatecomplementopago",
-    "description": "library to generate quotes with PDF print format to send to clients",
+    "description": "library to generate payment complement CFDI 4.0",
     "keywords": [
         "codeigniter4",
         "backup",
