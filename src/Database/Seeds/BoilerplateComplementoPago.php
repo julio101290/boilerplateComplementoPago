@@ -36,10 +36,11 @@ class BoilerplateComplementoPago extends Seeder {
     public function run() {
 
 
-        // Permission
+        // Permission                       listaPagos-permission
         $this->authorize->createPermission('listapagos-permission', 'Permission to payment complement CFDI4.0');
 
         // Assign Permission to user
+                                                
         $this->authorize->addPermissionToUser('listapagos-permission', 1);
 
     }

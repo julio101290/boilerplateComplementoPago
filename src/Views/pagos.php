@@ -91,7 +91,7 @@
 
 
                 <div class="form-group">
-                    <label for="productos"><?= lang("payments.custumers") ?></label>
+                    <label for="productos"><?= lang("payments.custumer") ?></label>
                     <select id='clientes' name='clientes' class="clientes" style='width: 100%;'>
 
                         <?php

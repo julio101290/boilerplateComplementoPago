@@ -1,4 +1,5 @@
 <?php
+
 namespace julio101290\boilerplatecomplementopago\Controllers;
 
 use App\Controllers\BaseController;
@@ -100,7 +101,9 @@ class PagosController extends BaseController {
 
             $datos = $this->pagos->mdlGetPagos($empresasID);
 
-            return \Hermawan\DataTables\DataTable::of($datos)->toJson(true);
+            return $this->response->setJSON([
+                        'data' => $datos
+            ]);
         }
 
 
@@ -141,15 +144,24 @@ class PagosController extends BaseController {
         if ($this->request->isAJAX()) {
 
 
-            $datos = $this->pagos->mdlGetPagosFilters($empresasID, $desdeFecha, $hastaFecha, $todas, $empresa, $sucursal, $cliente);
 
-            return \Hermawan\DataTables\DataTable::of($datos)->toJson(true);
+            $datos = $this->pagos->mdlGetPagosFilters(
+                    $empresasID,
+                    $desdeFecha,
+                    $hastaFecha,
+                    $todas,
+                    $empresa,
+                    $sucursal,
+                    $cliente
+            );
+
+            return $this->response->setJSON([
+                        'data' => $datos
+            ]);
         }
     }
-    
-    
-    
-        /*
+
+    /*
      * ZML ENLAZADOS POR DOCUMENTO
      */
 
@@ -175,7 +187,6 @@ class PagosController extends BaseController {
             return $ex->getMessage();
         }
     }
-    
 
     /**
      * 
@@ -189,9 +200,9 @@ class PagosController extends BaseController {
     public function sellsReport($idEmpresa = 0
             , $idSucursal = 0
             , $idProducto = 0
-            , $from
-            , $to
-            , $cliente) {
+            , $from = null
+            , $to = null
+            , $cliente = null) {
 
 
         $auth = service('authentication');
@@ -315,8 +326,6 @@ class PagosController extends BaseController {
 
         return view('julio101290\boilerplatecomplementopago\Views\newPayment', $titulos);
     }
-
-
 
     /**
      * Get Last Code
@@ -497,6 +506,7 @@ class PagosController extends BaseController {
         /**
          * if is new sell
          */
+        $datos = $this->normalizeNumerics($datos);
         if ($existsPago == 0) {
 
 
@@ -508,7 +518,7 @@ class PagosController extends BaseController {
 
             try {
 
-
+            
                 if ($this->pagos->save($datos) === false) {
 
                     $errores = $this->pagos->errors();
@@ -540,7 +550,15 @@ class PagosController extends BaseController {
                     $pagosDetalle["idSell"] = $value["idSell"];
                     $pagosDetalle["importPayment"] = $value["importeAPagar"];
                     $pagosDetalle["importBack"] = "0.00";
-                    $pagosDetalle["datePayment"] = $datos["date"];
+                    $timestamp = strtotime( $datos["date"]);
+
+                    if ($timestamp !== false) {
+                        $pagosDetalle["datePayment"] = date('Y-m-d H:i:s', $timestamp);
+                    } else {
+                        $pagosDetalle["datePayment"] = null; // o manejar error manualmente
+                    }
+          
+                    $pagosDetalle["metodPayment"] = $datos["metodoPago"];
 
                     if ($this->payments->save($pagosDetalle) === false) {
 
@@ -555,7 +573,7 @@ class PagosController extends BaseController {
 
                         echo $listErrors;
 
-                        echo "error al insertar el pago $pagosDetalle[importPayment] ".$listErrors;
+                        echo "error al insertar el pago $pagosDetalle[importPayment] " . $listErrors;
 
                         $this->pagos->db->transRollback();
                         return;
@@ -652,7 +670,16 @@ class PagosController extends BaseController {
                     $pagosDetalle["idSell"] = $value["idSell"];
                     $pagosDetalle["importPayment"] = $value["importeAPagar"];
                     $pagosDetalle["importBack"] = "0.00";
-                    $pagosDetalle["datePayment"] = $datos["date"];
+                    
+                    $timestamp = strtotime( $datos["date"]);
+
+                    if ($timestamp !== false) {
+                        $pagosDetalle["datePayment"] = date('Y-m-d H:i:s', $timestamp);
+                    } else {
+                        $pagosDetalle["datePayment"] = null; // o manejar error manualmente
+                    }
+          
+                    $pagosDetalle["metodPayment"] = $datos["metodoPago"];
 
                     if ($this->payments->save($pagosDetalle) === false) {
 
@@ -721,22 +748,20 @@ class PagosController extends BaseController {
 
             $empresasID = array_column($titulos["empresas"], "id");
         }
-        
-        
+
+
         /**
          * Verificamos que no este timbrada
          * 
          */
-        
         $enlace = $this->enlace
                         ->select("*")
-                        ->where("idDocumento",$id)
-                        ->where("tipo","pag")->countAllResults();
-        
-       
-        if($enlace>0){
-            
-             return $this->failNotFound('No se puede eliminar, el complemento de pago, tiene timbres enlazados');
+                        ->where("idDocumento", $id)
+                        ->where("tipo", "pag")->countAllResults();
+
+        if ($enlace > 0) {
+
+            return $this->failNotFound('No se puede eliminar, el complemento de pago, tiene timbres enlazados');
         }
 
 
@@ -1238,5 +1263,22 @@ class PagosController extends BaseController {
         }
 
         echo $facturas;
+    }
+
+    protected function normalizeNumerics(array $data): array {
+        // Campos que deben ser tratados como numéricos (enteros o decimales)
+        $numericFields = [
+            'taxes', 'IVARetenido', 'ISRRetenido', 'subTotal', 'total',
+            'balance', 'tipoComprobanteRD', 'idVehiculo', 'idChofer',
+            'tipoVehiculo', 'folioCombrobanteRD', 'idQuote', 'idArqueoCaja'
+        ];
+
+        foreach ($numericFields as $field) {
+            if (!isset($data[$field]) || $data[$field] === '' || $data[$field] === 'undefined' || $data[$field] === 'null') {
+                $data[$field] = 0;
+            }
+        }
+
+        return $data;
     }
 }

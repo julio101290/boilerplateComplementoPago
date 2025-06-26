@@ -4,11 +4,14 @@ $routes->group('admin', function ($routes) {
 
 
     $routes->resource('listCompPag', [
-        'filter' => 'permission:listaPagos-permission',
+        'filter' => 'permission:listapagos-permission',
+        'namespace' => 'julio101290\boilerplatecomplementopago\Controllers',
         'controller' => 'PagosController',
         'except' => 'show',
-        'namespace' => 'julio101290\boilerplatecomplementopago\Controllers',
+      
     ]);
+    
+   
 
     $routes->get('newPago'
             , 'PagosController::newPago'
@@ -34,7 +37,7 @@ $routes->group('admin', function ($routes) {
     );
 
     $routes->resource('pagos', [
-        'filter' => 'permission:listaPagos-permission',
+        'filter' => 'permission:listapagos-permission',
         'controller' => 'PagosController',
         'except' => 'show',
         'namespace' => 'julio101290\boilerplatecomplementopago\Controllers',
