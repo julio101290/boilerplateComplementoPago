@@ -166,25 +166,104 @@ class PagosController extends BaseController {
      */
 
     public function getXMLEnlazadosPagos($uuid) {
-
         try {
+            $datosPagos = $this->pagos->select('*')->where('UUID', $uuid)->first();
+            $idDocumento = isset($datosPagos['id']) ? (int) $datosPagos['id'] : 0;
 
-            $datosPagos = $this->pagos->select("*")->where("UUID", $uuid)->first();
+            $request = service('request');
+            $draw = (int) ($request->getVar('draw') ?? 0);
+            $start = (int) ($request->getVar('start') ?? 0);
+            $length = (int) ($request->getVar('length') ?? 10);
 
-            if (isset($datosPagos)) {
+            // DataTables envía un array 'columns' con metadata por columna
+            $dtColumns = $request->getVar('columns') ?? [];
+            // global search enviado por DataTables
+            $globalSearch = $request->getVar('search')['value'] ?? '';
 
-                $datosXMLEnlazados = $this->enlaceXML->select("id,idDocumento,uuidXML,tipo,importe")
-                        ->where("idDocumento", $datosPagos["id"])
-                        ->where("tipo", "pag");
-                return \Hermawan\DataTables\DataTable::of($datosXMLEnlazados)->toJson(true);
-            } else {
+            // Ordenamiento enviado por DataTables (array)
+            $order = $request->getVar('order') ?? [];
 
-                $datosXMLEnlazados = $this->enlaceXML->select("id,idDocumento,uuidXML,tipo,importe")->where("idDocumento", 0);
-                return \Hermawan\DataTables\DataTable::of($datosXMLEnlazados)->toJson(true);
+            // Construyo el builder desde el model enlaceXML (manteniendo tu select/where original)
+            $builder = $this->enlaceXML->builder()
+                    ->select('id,idDocumento,uuidXML,tipo,importe')
+                    ->where('idDocumento', $idDocumento)
+                    ->where('tipo', 'pag');
+
+            // recordsTotal (sin filtros)
+            $recordsTotal = (clone $builder)->countAllResults(false);
+
+            // ---- BÚSQUEDA GLOBAL: aplicar solo sobre columnas marcadas como searchable ----
+            if ($globalSearch !== '' && is_array($dtColumns) && count($dtColumns) > 0) {
+                $builder->groupStart();
+                foreach ($dtColumns as $col) {
+                    // cada $col suele tener: data, name, searchable, orderable, search:{value,regex}
+                    $colName = $col['data'] ?? null;
+                    $searchable = isset($col['searchable']) ? filter_var($col['searchable'], FILTER_VALIDATE_BOOLEAN) : false;
+
+                    if ($colName && $searchable) {
+                        // usa like; si quieres ILIKE para Postgres, cámbialo según tu QB/DB
+                        $builder->orLike($colName, $globalSearch);
+                    }
+                }
+                $builder->groupEnd();
             }
-        } catch (Exception $ex) {
 
-            return $ex->getMessage();
+            // ---- BÚSQUEDA POR COLUMNA (column search) ----
+            if (is_array($dtColumns) && count($dtColumns) > 0) {
+                foreach ($dtColumns as $col) {
+                    $colName = $col['data'] ?? null;
+                    $colSearch = isset($col['search']['value']) ? $col['search']['value'] : '';
+                    $searchable = isset($col['searchable']) ? filter_var($col['searchable'], FILTER_VALIDATE_BOOLEAN) : false;
+
+                    if ($colName && $searchable && $colSearch !== '') {
+                        $builder->like($colName, $colSearch);
+                    }
+                }
+            }
+
+            // recordsFiltered (después de aplicar búsquedas)
+            $recordsFiltered = (clone $builder)->countAllResults(false);
+
+            // ---- ORDENAMIENTO: solo aceptar columnas orderables según el array 'columns' ----
+            if (!empty($order) && is_array($order)) {
+                foreach ($order as $o) {
+                    $colIdx = (int) ($o['column'] ?? 0);
+                    $dir = (isset($o['dir']) && strtolower($o['dir']) === 'asc') ? 'ASC' : 'DESC';
+
+                    // validar que exista la columna en dtColumns y que sea orderable
+                    if (isset($dtColumns[$colIdx])) {
+                        $colInfo = $dtColumns[$colIdx];
+                        $colName = $colInfo['data'] ?? null;
+                        $orderable = isset($colInfo['orderable']) ? filter_var($colInfo['orderable'], FILTER_VALIDATE_BOOLEAN) : false;
+
+                        if ($colName && $orderable) {
+                            $builder->orderBy($colName, $dir);
+                        }
+                    }
+                }
+            } else {
+                $builder->orderBy('id', 'DESC');
+            }
+
+            // paginación
+            if ($length > 0) {
+                $builder->limit($length, $start);
+            }
+
+            $data = $builder->get()->getResultArray();
+
+            $output = [
+                'draw' => $draw,
+                'recordsTotal' => (int) $recordsTotal,
+                'recordsFiltered' => (int) $recordsFiltered,
+                'data' => $data,
+            ];
+
+            return $this->response->setJSON($output);
+        } catch (\Exception $ex) {
+            return $this->response->setStatusCode(500)->setJSON([
+                        'error' => $ex->getMessage()
+            ]);
         }
     }
 
@@ -518,7 +597,7 @@ class PagosController extends BaseController {
 
             try {
 
-            
+
                 if ($this->pagos->save($datos) === false) {
 
                     $errores = $this->pagos->errors();
@@ -550,14 +629,14 @@ class PagosController extends BaseController {
                     $pagosDetalle["idSell"] = $value["idSell"];
                     $pagosDetalle["importPayment"] = $value["importeAPagar"];
                     $pagosDetalle["importBack"] = "0.00";
-                    $timestamp = strtotime( $datos["date"]);
+                    $timestamp = strtotime($datos["date"]);
 
                     if ($timestamp !== false) {
                         $pagosDetalle["datePayment"] = date('Y-m-d H:i:s', $timestamp);
                     } else {
                         $pagosDetalle["datePayment"] = null; // o manejar error manualmente
                     }
-          
+
                     $pagosDetalle["metodPayment"] = $datos["metodoPago"];
 
                     if ($this->payments->save($pagosDetalle) === false) {
@@ -670,15 +749,15 @@ class PagosController extends BaseController {
                     $pagosDetalle["idSell"] = $value["idSell"];
                     $pagosDetalle["importPayment"] = $value["importeAPagar"];
                     $pagosDetalle["importBack"] = "0.00";
-                    
-                    $timestamp = strtotime( $datos["date"]);
+
+                    $timestamp = strtotime($datos["date"]);
 
                     if ($timestamp !== false) {
                         $pagosDetalle["datePayment"] = date('Y-m-d H:i:s', $timestamp);
                     } else {
                         $pagosDetalle["datePayment"] = null; // o manejar error manualmente
                     }
-          
+
                     $pagosDetalle["metodPayment"] = $datos["metodoPago"];
 
                     if ($this->payments->save($pagosDetalle) === false) {

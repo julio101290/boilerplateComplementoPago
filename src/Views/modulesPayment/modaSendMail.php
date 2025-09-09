@@ -18,7 +18,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
                                 </div>
-                                <input type="text"  name="correos" id="correos" class="form-control <?= session('error.correos') ? 'is-invalid' : '' ?>" value="" placeholder="correos" autocomplete="off">
+                                <select name="correos" id="correos" multiple="multiple" class="form-control correos" value="" placeholder="correos" autocomplete="off" style="width:80%;">
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -74,63 +75,57 @@
      * AL hacer click al editar
      */
 
-
-
     $(document).on('click', '.btnSendMailConfirm', function (e) {
+        e.preventDefault();
 
         console.log("Enviar correo");
-        
-        $(".btnSendMailConfirm").attr("disabled",true);
+
+        $(".btnSendMailConfirm").attr("disabled", true);
 
         var uuid = $("#uuidMail").val();
-
         var correos = $("#correos").val();
+        var folio = $("#folioVentaMail").val();
 
         $.ajax({
-
-            url: "<?= base_url('admin/mailSettings/sendMailVenta/') ?>"+uuid+'/'+correos,
-            method: "GET",
-        
-            cache: false,
-            contentType: false,
-            processData: false,
-            //dataType:"json",
+            url: "<?= base_url('admin/mailSettings/sendMailVenta') ?>",
+            method: "POST",
+            data: {
+                uuid: uuid,
+                correos: correos,
+                folioVentaMail: folio
+            },
+            dataType: "json", // espera JSON
             success: function (respuesta) {
-
-
-                if (respuesta.match(/Correctamente.*/)) {
-
-
+                if (respuesta.status === "success") {
                     Toast.fire({
                         icon: 'success',
-                        title: "Enviado Correctamente"
+                        title: respuesta.message
                     });
-
-
-                   
                     $(".btnSendMailConfirm").removeAttr("disabled");
-
-
                     $('#modalSendMail').modal('hide');
                 } else {
-
                     Toast.fire({
                         icon: 'error',
-                        title: respuesta
+                        title: respuesta.message
                     });
-
                     $(".btnSendMailConfirm").removeAttr("disabled");
-                  
                 }
-
+            },
+            error: function (xhr, status, error) {
+                Toast.fire({
+                    icon: 'error',
+                    title: "Error al enviar: " + error
+                });
+                $(".btnSendMailConfirm").removeAttr("disabled");
             }
-
-        }
-
-        )
-
-
+        });
     });
+    
+       $(".correos").select2({
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
+    
 </script>
 
 
