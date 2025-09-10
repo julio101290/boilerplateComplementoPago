@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <form id="form-paciente" class="form-horizontal">
 
-                <div class="form-group row">
+                    <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Correos</label>
                         <div class="col-sm-10">
                             <div class="input-group">
@@ -87,45 +87,39 @@
         var folio = $("#folioVentaMail").val();
 
         $.ajax({
-            url: "<?= base_url('admin/mailSettings/sendMailVenta') ?>",
+            url: "<?= base_url('admin/mailSettings/sendMailComplemento') ?>",
             method: "POST",
             data: {
                 uuid: uuid,
                 correos: correos,
                 folioVentaMail: folio
             },
-            dataType: "json", // espera JSON
             success: function (respuesta) {
-                if (respuesta.status === "success") {
+                if (respuesta.match(/Correctamente.*/)) {
                     Toast.fire({
                         icon: 'success',
-                        title: respuesta.message
+                        title: "Enviado Correctamente"
                     });
+
                     $(".btnSendMailConfirm").removeAttr("disabled");
                     $('#modalSendMail').modal('hide');
                 } else {
                     Toast.fire({
                         icon: 'error',
-                        title: respuesta.message
+                        title: respuesta
                     });
+
                     $(".btnSendMailConfirm").removeAttr("disabled");
                 }
-            },
-            error: function (xhr, status, error) {
-                Toast.fire({
-                    icon: 'error',
-                    title: "Error al enviar: " + error
-                });
-                $(".btnSendMailConfirm").removeAttr("disabled");
             }
         });
     });
-    
-       $(".correos").select2({
+
+    $(".correos").select2({
         tags: true,
         tokenSeparators: [',', ' ']
     });
-    
+
 </script>
 
 

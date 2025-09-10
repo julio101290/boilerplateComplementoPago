@@ -438,7 +438,7 @@
         $('#correos').append(newOption).trigger('change');
 
         $("#uuidMail").val(uuid);
-        $("#folioVentanMail").val(folio);
+        $("#folioVentaMail").val(folio);
 
 
     });

@@ -70,4 +70,10 @@ $routes->group('admin', function ($routes) {
             );
     
     
+        // Envio de facturas
+    $routes->post('mailSettings/sendMailComplemento'
+            , 'SettingsMailController::sendMailComplementoPDF'
+            , ['namespace' => 'julio101290\boilerplatesells\Controllers']
+            );
+    
 });
